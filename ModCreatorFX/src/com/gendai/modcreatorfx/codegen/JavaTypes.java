@@ -1,3 +1,8 @@
+/*
+ * ModCreatorFX, a mod generator with templates
+ * Copyright (C) gendai <https://bitbucket.org/Gendai/modcreatorfx>
+ * 
+ */
 package com.gendai.modcreatorfx.codegen;
 
 public class JavaTypes {
