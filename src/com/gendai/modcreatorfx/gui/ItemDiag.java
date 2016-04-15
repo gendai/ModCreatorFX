@@ -1,3 +1,22 @@
+/*
+ * ModCreatorFX, a mod generator with templates
+ * Copyright (C) gendai <https://bitbucket.org/Gendai/modcreatorfx>
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 package com.gendai.modcreatorfx.gui;
 
 import java.io.File;
@@ -22,43 +41,56 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
+/**
+ * The item dialogue box class.
+ * @author gendai
+ * @version 0.0.1
+ */
 public class ItemDiag {
-
-	Dialog<ItemInfo> item;
-	File texturefile;
+	Dialog<ItemInfo> itemInfo;
+	File textureFile;
 	
 	public ItemDiag(){
-		
 	}
 	
+	/**
+	 * Create a Dialog<ItemInfo> with all the parameters.
+	 * @return the created Dialog.
+	 */
 	public Dialog<ItemInfo> Show(){
-		item = new Dialog<>();
-		item.setTitle("Mod Creator");
-		item.setHeaderText("Entrer les parametres");
-		item.setResizable(false);
-		Stage st = (Stage)item.getDialogPane().getScene().getWindow();
-		st.getIcons().add(new Image(Resource.class.getResourceAsStream("icon36.png")));
+		itemInfo = new Dialog<>();
+		itemInfo.setTitle("Mod Creator");
+		itemInfo.setHeaderText("Entrer les parametres");
+		itemInfo.setResizable(false);
+		Stage st = (Stage)itemInfo.getDialogPane().getScene().getWindow();
+		st.getIcons().add(new Image(
+				Resource.class.getResourceAsStream("icon36.png")));
 		Label nm = new Label("Nom: ");
 		Label fl = new Label("File: ");
 		Label type = new Label("Type: ");
 		TextField tnm = new TextField();
 		TextField tfl = new TextField();
 		tfl.setEditable(false);
+		
 		Button chb = new Button("...");
 		chb.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				FileChooser chooser = new FileChooser();
 				chooser.setTitle("Choose Texture File");
-				texturefile = chooser.showOpenDialog(chb.getScene().getWindow());
-				if(texturefile != null){
-					tfl.setText(texturefile.getName());
+				textureFile = chooser.showOpenDialog(
+						chb.getScene().getWindow());
+				if(textureFile != null){
+					tfl.setText(textureFile.getName());
 				}
 			}
 		});
-		ObservableList<ItemType.Items> it = FXCollections.observableArrayList();;
-		it.addAll(ItemType.Items.Axe, ItemType.Items.Shovel, ItemType.Items.Stick);
+		
+		ObservableList<ItemType.Items> it = FXCollections.observableArrayList();
+		it.addAll(ItemType.Items.Axe, ItemType.Items.Shovel,
+				  ItemType.Items.Stick);
 		ComboBox<ItemType.Items> combo = new ComboBox<>(it);
+		
 		GridPane grid = new GridPane();
 		grid.add(nm, 1, 1);
 		grid.add(tnm, 2, 1);
@@ -67,20 +99,21 @@ public class ItemDiag {
 		grid.add(chb, 3, 2);
 		grid.add(type, 1, 3);
 		grid.add(combo, 2, 3);
-		item.getDialogPane().setContent(grid);
+		itemInfo.getDialogPane().setContent(grid);
 		
 		ButtonType buttonOK = new ButtonType("Ok", ButtonData.OK_DONE);
-		item.getDialogPane().getButtonTypes().add(buttonOK);
+		itemInfo.getDialogPane().getButtonTypes().add(buttonOK);
 		
-		item.setResultConverter(new Callback<ButtonType, ItemInfo>() {
+		itemInfo.setResultConverter(new Callback<ButtonType, ItemInfo>() {
 			@Override
 			public ItemInfo call(ButtonType param) {
 				if(param == buttonOK){
-					return new ItemInfo(tnm.getText(), texturefile, combo.getSelectionModel().getSelectedItem());
+					return new ItemInfo(tnm.getText(), textureFile,
+							combo.getSelectionModel().getSelectedItem());
 				}
 				return null;
 			}
 		});
-		return item;
+		return itemInfo;
 	}
 }

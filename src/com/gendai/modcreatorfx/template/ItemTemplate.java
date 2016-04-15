@@ -1,3 +1,22 @@
+/*
+ * ModCreatorFX, a mod generator with templates
+ * Copyright (C) gendai <https://bitbucket.org/Gendai/modcreatorfx>
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 package com.gendai.modcreatorfx.template;
 
 import java.io.BufferedWriter;
@@ -26,59 +45,74 @@ import com.gendai.modcreatorfx.javagen.methodgen.MethodDeclarator;
 import com.gendai.modcreatorfx.javagen.methodgen.MethodParams;
 import com.gendai.modcreatorfx.resources.Resource;
 
+/**
+ * The template for minecraft item, generating all java files.
+ * @author gendai
+ * @version 0.0.1
+ */
 public class ItemTemplate {
-	
 	ItemInfo item;
 	ModInfo mod;
-	File javadir;
-	File resdir;
-	File proxydir;
-	File initdir;
-	File itemsdir;
+	File javaDir;
+	File resDir;
+	File proxyDir;
+	File initDir;
+	File itemsDir;
 	File res;
-	File langdir;
-	File modeldir;
+	File langDir;
+	File modelDir;
 	
+	/**
+	 * Create a new ItemTemplate
+	 * @param mod the ModInfo.
+	 * @param item the ItemInfo.
+	 */
 	public ItemTemplate(ModInfo mod,ItemInfo item){
 		this.item = item;
 		this.mod = mod;
 	}
 	
+	/**
+	 * Set up all the directory used then for generating the java files.
+	 * Also get the texture file and the json file and modify as needed.
+	 */
 	@SuppressWarnings("unchecked")
 	private void config(){
-		javadir = new File(Reference.outputLocation+mod.getName()+"/java/"+mod.getName());
-		javadir.mkdirs();
-		resdir = new File(Reference.outputLocation+mod.getName()+"/resources/assets/"+mod.getName().toLowerCase());
-		resdir.mkdirs();
-		proxydir = new File(javadir+"/proxy");
-		proxydir.mkdirs();
-		initdir = new File(javadir+"/init");
-		initdir.mkdirs();
-		itemsdir = new File(javadir+"/items");
-		itemsdir.mkdirs();
-		langdir = new File(resdir.getPath()+"/lang/en_US.lang");
-		langdir.getParentFile().mkdirs();
-		modeldir = new File(resdir.getPath()+"/models/item/"+item.getName().toLowerCase()+".json");
-		modeldir.getParentFile().mkdirs();
+		javaDir = new File(Reference.OUTPUT_LOCATION+mod.getName()
+			+"/java/"+mod.getName());
+		javaDir.mkdirs();
+		resDir = new File(Reference.OUTPUT_LOCATION+mod.getName()
+			+"/resources/assets/"+mod.getName().toLowerCase());
+		resDir.mkdirs();
+		proxyDir = new File(javaDir+"/proxy");
+		proxyDir.mkdirs();
+		initDir = new File(javaDir+"/init");
+		initDir.mkdirs();
+		itemsDir = new File(javaDir+"/items");
+		itemsDir.mkdirs();
+		langDir = new File(resDir.getPath()+"/lang/en_US.lang");
+		langDir.getParentFile().mkdirs();
+		modelDir = new File(resDir.getPath()+"/models/item/"
+				+item.getName().toLowerCase()+".json");
+		modelDir.getParentFile().mkdirs();
 		try {
-			langdir.createNewFile();
-			FileWriter fw = new FileWriter(langdir.getAbsoluteFile());
+			langDir.createNewFile();
+			FileWriter fw = new FileWriter(langDir.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
 			bw.write("item."+item.getName()+".name="+item.getName());
 			bw.close();
-			
 			//modeldir.createNewFile();
-			Files.copy(Paths.get(Resource.class.getResource(item.getType().name()+".json").getPath().substring(3)), Paths.get(modeldir.toString()));
+			Files.copy(Paths.get(Resource.class.getResource(
+					item.getType().name()+".json").getPath().substring(3)),
+					Paths.get(modelDir.toString()));
 			JSONParser parser = new JSONParser();
-			Object obj = parser.parse(new FileReader(modeldir.toString()));
+			Object obj = parser.parse(new FileReader(modelDir.toString()));
 			JSONObject jsonObject = (JSONObject) obj;
 			JSONObject arr = (JSONObject)jsonObject.get("textures");
-			arr.put("layer0", mod.getName().toLowerCase()+":items/"+item.getName().toLowerCase());
-			FileWriter file = new FileWriter(modeldir.toString());
-			//System.out.println(jsonObject.toString());
-			//System.out.println(jsonObject.toString().contains("\\/"));
+			arr.put("layer0", mod.getName().toLowerCase()+":items/"
+					+item.getName().toLowerCase());
+			FileWriter file = new FileWriter(modelDir.toString());
 			String rep = jsonObject.toString().replace("\\/", "/");
-			//System.out.println(rep);
 			file.write(rep);
 			file.flush();
 			file.close();
@@ -86,7 +120,8 @@ public class ItemTemplate {
 			e1.printStackTrace();
 		}
 		res = item.getTexturefile();
-		Path pathto = Paths.get(resdir.getPath()+"/textures/items/"+item.getName().toLowerCase()+".png");
+		Path pathto = Paths.get(resDir.getPath()+"/textures/items/"
+				+item.getName().toLowerCase()+".png");
 		pathto.toFile().getParentFile().mkdirs();
 		try {
 			Files.copy(res.toPath(), pathto);
@@ -95,10 +130,17 @@ public class ItemTemplate {
 		}
 	}
 	
+	/**
+	 * Generate all the java files.
+	 * @throws IOException
+	 */
 	public void create() throws IOException{
 		config();
-		BaseGenerator bg = new BaseGenerator(javadir+"/"+mod.getName()+".java", mod.getName(), mod.getName());
-		ClassGen cg = bg.createClass(mod.getName(), Visibility.PUBLIC, "", "", "@Mod(modid = Reference.MOD_ID, name = Reference.MOD_name, version = Reference.VERSION)",mod.getName());
+		BaseGenerator bg = new BaseGenerator(javaDir+"/"+mod.getName()
+			+".java", mod.getName(), mod.getName());
+		ClassGen cg = bg.createClass(mod.getName(), Visibility.PUBLIC, "", "",
+				"@Mod(modid = Reference.MOD_ID, name = Reference.MOD_name, "
+				+ "version = Reference.VERSION)",mod.getName());
 		cg.addImport(mod.getName()+".init."+mod.getName()+"Items");
 		cg.addImport(mod.getName()+".proxy.CommonProxy");
 		cg.addImport("net.minecraftforge.fml.common.Mod");
@@ -106,21 +148,29 @@ public class ItemTemplate {
 		cg.addImport("net.minecraftforge.fml.common.Mod.Instance");
 		cg.addImport("net.minecraftforge.fml.common.ModMetadata");
 		cg.addImport("net.minecraftforge.fml.common.SidedProxy");
-		cg.addImport("net.minecraftforge.fml.common.event.FMLInitializationEvent");
-		cg.addImport("net.minecraftforge.fml.common.event.FMLPostInitializationEvent");
-		cg.addImport("net.minecraftforge.fml.common.event.FMLPreInitializationEvent");
-		cg.addImport("net.minecraftforge.fml.common.event.FMLServerStartingEvent");
+		cg.addImport("net.minecraftforge.fml.common.event"
+				+ ".FMLInitializationEvent");
+		cg.addImport("net.minecraftforge.fml.common.event"
+				+ ".FMLPostInitializationEvent");
+		cg.addImport("net.minecraftforge.fml.common.event"
+				+ ".FMLPreInitializationEvent");
+		cg.addImport("net.minecraftforge.fml.common.event"
+				+ ".FMLServerStartingEvent");
 		CodeBlock cb = new CodeBlock();
 		JExpr expr = new JExpr();
-		cb.addExpr(expr.Annotation("@Instance(Reference.MOD_ID)"),true);
-		cb.addExpr(expr.declare("public static "+mod.getName(), "instance"),false);
-		cb.addExpr(expr.Annotation("@SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS, serverSide = Reference.SERVER_PROXY_CLASS)"),true);
+		cb.addExpr(expr.annotation("@Instance(Reference.MOD_ID)"),true);
+		cb.addExpr(expr.declare("public static "+mod.getName(), "instance"),
+				false);
+		cb.addExpr(expr.annotation("@SidedProxy(clientSide = Reference"
+				+ ".CLIENT_PROXY_CLASS, serverSide = "
+				+ "Reference.SERVER_PROXY_CLASS)"),true);
 		cb.addExpr(expr.declare("public static CommonProxy", "proxy"),false);
 		cg.addDeclaration(cb);
 		MethodParams mp = new MethodParams(1);
 		mp.setParamName(new String[]{"event"});
 		mp.setParamType(new String[]{"FMLPreInitializationEvent"});
-		MethodDeclarator md = new MethodDeclarator("preInit", ReturnType.VOID, mp, Visibility.PUBLIC);
+		MethodDeclarator md = new MethodDeclarator("preInit", ReturnType.VOID,
+				mp, Visibility.PUBLIC);
 		CodeBlock cbm = new CodeBlock();
 		cbm.addExpr(new JExpr().call(mod.getName()+"Items.init(this)"),false);
 		cbm.addExpr(new JExpr().call(mod.getName()+"Items.register()"),false);
@@ -128,96 +178,141 @@ public class ItemTemplate {
 		mp = new MethodParams(1);
 		mp.setParamName(new String[]{"event"});
 		mp.setParamType(new String[]{"FMLInitializationEvent"});
-		md = new MethodDeclarator("init", ReturnType.VOID, mp, Visibility.PUBLIC);
+		md = new MethodDeclarator("init", ReturnType.VOID, mp,
+				Visibility.PUBLIC);
 		cbm = new CodeBlock();
 		cbm.addExpr(new JExpr().call("proxy.registerRenders()"),false);
 		cg.addMethod(md, "@EventHandler", cbm);
 		mp = new MethodParams(1);
 		mp.setParamName(new String[]{"event"});
 		mp.setParamType(new String[]{"FMLPostInitializationEvent"});
-		md = new MethodDeclarator("postInit", ReturnType.VOID, mp, Visibility.PUBLIC);
+		md = new MethodDeclarator("postInit", ReturnType.VOID, mp,
+				Visibility.PUBLIC);
 		cbm = new CodeBlock();
 		cg.addMethod(md, "@EventHandler", cbm);
 		mp = new MethodParams(1);
 		mp.setParamName(new String[]{"event"});
 		mp.setParamType(new String[]{"FMLServerStartingEvent"});
-		md = new MethodDeclarator("serverLoad", ReturnType.VOID, mp, Visibility.PUBLIC);
+		md = new MethodDeclarator("serverLoad", ReturnType.VOID, mp,
+				Visibility.PUBLIC);
 		cbm = new CodeBlock();
 		cg.addMethod(md, "@EventHandler", cbm);
 		cg.Build();
 		
-		bg = new BaseGenerator(javadir+"/Reference.java", "Reference", mod.getName());
-		cg = bg.createClass("Reference", Visibility.PUBLIC, "", "", "", mod.getName());
+		bg = new BaseGenerator(javaDir+"/Reference.java", "Reference",
+				mod.getName());
+		cg = bg.createClass("Reference", Visibility.PUBLIC, "", "", "",
+				mod.getName());
 		cbm = new CodeBlock();
-		cbm.addExpr(new JExpr().ToJExpr("public static final String MOD_ID"),new JExpr().Assig(new JExpr().Variable("\""+mod.getName().toLowerCase()+"\"")));
-		cbm.addExpr(new JExpr().ToJExpr("public static final String MOD_name"),new JExpr().Assig(new JExpr().Variable("\""+mod.getName()+"\"")));
-		cbm.addExpr(new JExpr().ToJExpr("public static final String VERSION"),new JExpr().Assig(new JExpr().Variable("\""+mod.getVersion()+"\"")));
-		cbm.addExpr(new JExpr().ToJExpr("public static final String CLIENT_PROXY_CLASS"),new JExpr().Assig(new JExpr().Variable("\""+mod.getName()+".proxy.ClientProxy\"")));
-		cbm.addExpr(new JExpr().ToJExpr("public static final String SERVER_PROXY_CLASS"),new JExpr().Assig(new JExpr().Variable("\""+mod.getName()+".proxy.CommonProxy\"")));
+		cbm.addExpr(new JExpr().toJExpr("public static final String MOD_ID"),
+				new JExpr().assignment(new JExpr().variable("\""+
+						mod.getName().toLowerCase()+"\"")));
+		cbm.addExpr(new JExpr().toJExpr("public static final String MOD_name"),
+				new JExpr().assignment(new JExpr().variable("\""
+						+mod.getName()+"\"")));
+		cbm.addExpr(new JExpr().toJExpr("public static final String VERSION"),
+				new JExpr().assignment(new JExpr().variable("\""
+						+mod.getVersion()+"\"")));
+		cbm.addExpr(new JExpr().toJExpr("public static final String "
+				+ "CLIENT_PROXY_CLASS"),new JExpr().assignment(
+						new JExpr().variable("\""+mod.getName()
+							+".proxy.ClientProxy\"")));
+		cbm.addExpr(new JExpr().toJExpr("public static final String "
+				+ "SERVER_PROXY_CLASS"),new JExpr().assignment(
+						new JExpr().variable("\""+mod.getName()
+							+".proxy.CommonProxy\"")));
 		cg.addDeclaration(cbm);
 		cg.Build();
 		
-		bg = new BaseGenerator(proxydir+"/ClientProxy.java", "ClientProxy", mod.getName());
-		cg = bg.createClass("ClientProxy", Visibility.PUBLIC, "CommonProxy", "", "", mod.getName()+".proxy");
+		bg = new BaseGenerator(proxyDir+"/ClientProxy.java",
+				"ClientProxy", mod.getName());
+		cg = bg.createClass("ClientProxy", Visibility.PUBLIC,
+				"CommonProxy", "", "", mod.getName()+".proxy");
 		cg.addImport(mod.getName()+".init."+mod.getName()+"Items");
 		mp = new MethodParams(0);
-		md = new MethodDeclarator("registerRenders", ReturnType.VOID, mp, Visibility.PUBLIC);
+		md = new MethodDeclarator("registerRenders", ReturnType.VOID, mp,
+				Visibility.PUBLIC);
 		cbm = new CodeBlock();
-		cbm.addExpr(new JExpr().call(mod.getName()+"Items.registerRenders()"),false);
+		cbm.addExpr(new JExpr().call(mod.getName()+"Items.registerRenders()"),
+				false);
 		cg.addMethod(md, "@Override", cbm);
 		cg.Build();
 		
-		bg = new BaseGenerator(proxydir+"/CommonProxy.java", "CommonProxy", mod.getName());
-		cg = bg.createClass("CommonProxy", Visibility.PUBLIC, "", "", "", mod.getName()+".proxy");
+		bg = new BaseGenerator(proxyDir+"/CommonProxy.java", "CommonProxy",
+				mod.getName());
+		cg = bg.createClass("CommonProxy", Visibility.PUBLIC, "", "", "",
+				mod.getName()+".proxy");
 		mp = new MethodParams(0);
-		md = new MethodDeclarator("registerRenders", ReturnType.VOID, mp, Visibility.PUBLIC);
+		md = new MethodDeclarator("registerRenders", ReturnType.VOID, mp,
+				Visibility.PUBLIC);
 		cbm = new CodeBlock();
 		cg.addMethod(md, "", cbm);
 		cg.Build();
 		
-		bg = new BaseGenerator(initdir+"/"+mod.getName()+"Items.java", mod.getName()+"Items", mod.getName());
-		cg = bg.createClass(mod.getName()+"Items", Visibility.PUBLIC, "", "", "", mod.getName()+".init");
+		bg = new BaseGenerator(initDir+"/"+mod.getName()+"Items.java",
+				mod.getName()+"Items", mod.getName());
+		cg = bg.createClass(mod.getName()+"Items", Visibility.PUBLIC, "", "",
+				"", mod.getName()+".init");
 		cbm = new CodeBlock();
 		cg.addImport(mod.getName()+".Reference");
 		cg.addImport(mod.getName()+"."+mod.getName());
 		cg.addImport(mod.getName()+".items."+item.getName());
 		cg.addImport("net.minecraft.client.Minecraft");
-		cg.addImport("net.minecraft.client.resources.model.ModelResourceLocation");
+		cg.addImport("net.minecraft.client.resources.model"
+				+ ".ModelResourceLocation");
 		cg.addImport("net.minecraft.item.Item");
 		cg.addImport("net.minecraftforge.fml.common.registry.EntityRegistry");
 		cg.addImport("net.minecraftforge.fml.common.registry.GameRegistry");
-		cbm.addExpr(new JExpr().declare("public static Item", item.getName().toLowerCase()),false);
+		cbm.addExpr(new JExpr().declare("public static Item",
+				item.getName().toLowerCase()),false);
 		cg.addDeclaration(cbm);
 		mp = new MethodParams(1);
 		mp.setParamName(new String[]{"mod"});
 		mp.setParamType(new String[]{mod.getName()});
-		md = new MethodDeclarator("init", ReturnType.VOID, mp, Visibility.PUBLIC_STATIC);
+		md = new MethodDeclarator("init", ReturnType.VOID, mp, 
+				Visibility.PUBLIC_STATIC);
 		cbm = new CodeBlock();
-		cbm.addExpr(new JExpr().Variable(item.getName().toLowerCase()),new JExpr().Assig(new JExpr().Jnew(new JExpr().ToJExpr(item.getName()+"(mod).setUnlocalizedName(\""+item.getName()+"\")"))));
+		cbm.addExpr(new JExpr().variable(item.getName().toLowerCase()),
+				new JExpr().assignment(new JExpr().Jnew(
+						new JExpr().toJExpr(item.getName()
+								+"(mod).setUnlocalizedName(\""
+									+item.getName()+"\")"))));
 		cg.SetConstructor(md, cbm);
 		
 		mp = new MethodParams(0);
-		md = new MethodDeclarator("register", ReturnType.VOID, mp, Visibility.PUBLIC_STATIC);
+		md = new MethodDeclarator("register", ReturnType.VOID, mp,
+				Visibility.PUBLIC_STATIC);
 		cbm = new CodeBlock();
-		cbm.addExpr(new JExpr().ToJExpr("GameRegistry.registerItem("+item.getName().toLowerCase()+","+item.getName().toLowerCase()+".getUnlocalizedName().substring(5))"),false);
+		cbm.addExpr(new JExpr().toJExpr("GameRegistry.registerItem("
+				+item.getName().toLowerCase()+","+item.getName().toLowerCase()
+					+".getUnlocalizedName().substring(5))"),false);
 		cg.addMethod(md, "", cbm);
 		
-		md = new MethodDeclarator("registerRenders", ReturnType.VOID, mp, Visibility.PUBLIC_STATIC);
+		md = new MethodDeclarator("registerRenders", ReturnType.VOID, mp, 
+				Visibility.PUBLIC_STATIC);
 		cbm = new CodeBlock();
-		cbm.addExpr(new JExpr().call("registerRender("+item.getName().toLowerCase()+")"),false);
+		cbm.addExpr(new JExpr().call("registerRender("
+				+item.getName().toLowerCase()+")"),false);
 		cg.addMethod(md, "", cbm);
 		
 		mp = new MethodParams(1);
 		mp.setParamName(new String[]{"item"});
 		mp.setParamType(new String[]{"Item"});
-		md = new MethodDeclarator("registerRender", ReturnType.VOID, mp, Visibility.PUBLIC_STATIC);
+		md = new MethodDeclarator("registerRender", ReturnType.VOID, mp, 
+				Visibility.PUBLIC_STATIC);
 		cbm = new CodeBlock();
-		cbm.addExpr(new JExpr().ToJExpr("Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, 0, new ModelResourceLocation(Reference.MOD_ID + \":\"+item.getUnlocalizedName().substring(5), \"inventory\"))"),false);
+		cbm.addExpr(new JExpr().toJExpr("Minecraft.getMinecraft()"
+				+ ".getRenderItem().getItemModelMesher()"
+				+ ".register(item, 0, new ModelResourceLocation("
+				+ "Reference.MOD_ID + \":\"+item.getUnlocalizedName()"
+				+ ".substring(5), \"inventory\"))"),false);
 		cg.addMethod(md, "", cbm);
 		cg.Build();
 		
-		bg = new BaseGenerator(itemsdir+"/"+item.getName()+".java", item.getName(), mod.getName());
-		cg = bg.createClass(item.getName(), Visibility.PUBLIC, "Item", "", "", mod.getName()+".items");
+		bg = new BaseGenerator(itemsDir+"/"+item.getName()+".java",
+				item.getName(), mod.getName());
+		cg = bg.createClass(item.getName(), Visibility.PUBLIC, "Item", "", "",
+				mod.getName()+".items");
 		cbm = new CodeBlock();
 		cbm.addExpr(new JExpr().declare(mod.getName(), "mod"),false);
 		cg.addDeclaration(cbm);
@@ -226,12 +321,14 @@ public class ItemTemplate {
 		mp = new MethodParams(1);
 		mp.setParamName(new String[]{"mod"});
 		mp.setParamType(new String[]{mod.getName()});
-		md = new MethodDeclarator(item.getName(), ReturnType.BLANK, mp, Visibility.PUBLIC);
+		md = new MethodDeclarator(item.getName(), ReturnType.BLANK, mp,
+				Visibility.PUBLIC);
 		cbm = new CodeBlock();
-		cbm.addExpr(new JExpr().ToJExpr("this.mod = mod"),false);
+		cbm.addExpr(new JExpr().toJExpr("this.mod = mod"),false);
 		cg.SetConstructor(md, cbm);
 		cg.Build();
-		/*FileInputStream fileIn = new FileInputStream("./javaoutput/"+mod.getName()+"/"+item.getName()+".ser");
+		/*FileInputStream fileIn = new FileInputStream("./javaoutput/"+mod.
+		 * getName()+"/"+item.getName()+".ser");
 		@SuppressWarnings("resource")
 		ObjectInputStream in = new ObjectInputStream(fileIn);
 		fileserial.add((FileSerial)in.readObject());*/

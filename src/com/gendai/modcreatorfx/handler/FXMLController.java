@@ -1,3 +1,21 @@
+/*
+ * ModCreatorFX, a mod generator with templates
+ * Copyright (C) gendai <https://bitbucket.org/Gendai/modcreatorfx>
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 package com.gendai.modcreatorfx.handler;
 
 import java.awt.Desktop;
@@ -48,31 +66,47 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
+/**
+ * The Controller of the JavaFX application.
+ * @author gendai
+ * @version 0.0.1
+ */
 public class FXMLController implements Initializable{
 	@FXML private ListView<String> lstv;
-	@FXML private TreeView<String> TreeV;
-	@FXML private Label Modlbl;
-	@FXML private TextFlow Rich;
-	@FXML private Button AddItem;
-	@FXML private Pane PanTest;
+	@FXML private TreeView<String> treeV;
+	@FXML private Label modlbl;
+	@FXML private TextFlow rich;
+	@FXML private Button addItem;
+	@FXML private Pane panTest;
 	private final ObservableList<String> items = FXCollections.observableArrayList();
 	private TreeItem<String> root;
 	private FileCreator fc;
 	private ArrayList<ModInfo> mods;
 
+	/**
+	 * Update the TreeView items when the Mod tab is selected.
+	 * @param e
+	 */
 	@FXML protected void OnTabSel(Event e){
 		if(!lstv.getSelectionModel().isEmpty()){
-			root = new TreeItem<String>(lstv.getSelectionModel().getSelectedItem());
+			root = new TreeItem<String>(lstv.getSelectionModel()
+					.getSelectedItem());
 			root.setExpanded(true);
-			File dir = new File(Reference.outputLocation+lstv.getSelectionModel().getSelectedItem());
+			File dir = new File(Reference.OUTPUT_LOCATION
+					+lstv.getSelectionModel().getSelectedItem());
 			root = getTreeView(dir);
-			TreeV.setRoot(root);
+			treeV.setRoot(root);
 		}
 	}
 
+	/**
+	 * Open the browser with the JSON-simple link.
+	 * @param e
+	 */
 	@FXML protected void OnLinkClick(ActionEvent e){
 		try {
-			Desktop.getDesktop().browse(new URI("https://github.com/fangyidong/json-simple"));
+			Desktop.getDesktop().browse(
+					new URI("https://github.com/fangyidong/json-simple"));
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		} catch (URISyntaxException e1) {
@@ -80,36 +114,43 @@ public class FXMLController implements Initializable{
 		}
 	}
 
+	/**
+	 * Disable the add item button if no mod is selected.
+	 * @param e
+	 */
 	@FXML protected void OnSelect(MouseEvent e){
 		if(lstv.getSelectionModel().getSelectedIndex() != -1){
-			Modlbl.setText(lstv.getSelectionModel().getSelectedItem());
-			AddItem.setDisable(false);
+			modlbl.setText(lstv.getSelectionModel().getSelectedItem());
+			addItem.setDisable(false);
 		}else{
-			Modlbl.setText("Choisissez un mod");
-			AddItem.setDisable(true);
+			modlbl.setText("Choisissez un mod");
+			addItem.setDisable(true);
 		}
 	}
 
+	/**
+	 * Open the Item dialog box and if parameters are right, create the item.
+	 * @param e
+	 */
 	@FXML protected void OnItemClick(ActionEvent e){
-		/*File f = new File(Reference.outputLocation+lstv.getSelectionModel().getSelectedItem()+"/test.java");
-		try {
-			f.createNewFile();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}*/
 		Dialog<ItemInfo> diag = new ItemDiag().Show();
 		Optional<ItemInfo> res = diag.showAndWait();
 		if(res.isPresent()){
 			String tmp = res.get().getName().replaceAll(" ", "");
-			if(res.get().getName().isEmpty() || tmp.equals("") || res.get().getType() == null || res.get().getTexturefile() == null){
+			if(res.get().getName().isEmpty() || tmp.equals("") 
+					|| res.get().getType() == null 
+					|| res.get().getTexturefile() == null){
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Erreur");
 				alert.setHeaderText("Erreur sur les parametres");
-				alert.setContentText("Tous les parametres ne sont pas conforme");
+				alert.setContentText("Tous les parametres ne "
+						+ "sont pas conforme");
 				alert.showAndWait();
 			}else{
 				System.out.println("All went right!!");
-				ItemTemplate template = new ItemTemplate(mods.get(lstv.getSelectionModel().getSelectedIndex()),res.get());
+				ItemTemplate template = new ItemTemplate(
+						mods.get(lstv.getSelectionModel().getSelectedIndex()),
+						res.get());
 				try {
 					template.create();
 				} catch (IOException e1) {
@@ -119,16 +160,22 @@ public class FXMLController implements Initializable{
 		}
 	}
 
+	/**
+	 * Open the mod dialog box and add the mod if all parameters are right.
+	 * @param e
+	 */
 	@FXML protected void OnAddClick(ActionEvent e){
 		Dialog<ModInfo> diag = new ModDiag().ShowAdd();
 		Optional<ModInfo> res = diag.showAndWait();
 		if(res.isPresent()){
 			String tmp = res.get().getName().replaceAll(" ", "");
-			if(items.contains(res.get().getName()) || res.get().getName().isEmpty() || tmp.equals("")){
+			if(items.contains(res.get().getName()) 
+					|| res.get().getName().isEmpty() || tmp.equals("")){
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Erreur");
 				alert.setHeaderText("Erreur sur le nom du mod");
-				alert.setContentText("Ce nom de mod existe déjà ou vous n'avez pas entré de nom");
+				alert.setContentText("Ce nom de mod existe déjà ou "
+						+ "vous n'avez pas entré de nom");
 				alert.showAndWait();
 			}else{
 				mods.add(res.get());
@@ -137,19 +184,24 @@ public class FXMLController implements Initializable{
 				Serial();
 			}
 		}
-
 	}
-
+	
+	/**
+	 * Delete the mod selected and the associated folders.
+	 * @param e
+	 */
 	@FXML protected void OnDelClick(ActionEvent e){
 		int index = lstv.getSelectionModel().getSelectedIndex();
 		if(items.size() != 0 && index != -1){
-			File f = new File(Reference.outputLocation+lstv.getSelectionModel().getSelectedItem());
-			File[] filetemp = f.listFiles();
-			for(int i = 0; i < filetemp.length; i++){
-				filetemp[i].delete();
+			File f = new File(Reference.OUTPUT_LOCATION
+					+lstv.getSelectionModel().getSelectedItem());
+			File[] fileTemp = f.listFiles();
+			for(int i = 0; i < fileTemp.length; i++){
+				fileTemp[i].delete();
 			}
 			f.delete();
-			File configf = new File(Reference.configLocation+lstv.getSelectionModel().getSelectedItem()+".ser");
+			File configf = new File(Reference.CONFIG_LOCATION
+					+lstv.getSelectionModel().getSelectedItem()+".ser");
 			configf.delete();
 			mods.remove(index);
 			items.remove(index);
@@ -157,8 +209,13 @@ public class FXMLController implements Initializable{
 		}
 	}
 
+	/**
+	 * Open the Renew dialog box and update the mod info.
+	 * @param e
+	 */
 	@FXML protected void OnRenameClick(ActionEvent e){
 		int index = lstv.getSelectionModel().getSelectedIndex();
+		
 		if(items.size() != 0 && index != -1){
 			Dialog<ModInfo> diag = new ModDiag().ShowRenew(mods.get(index));
 			Optional<ModInfo> res = diag.showAndWait();
@@ -170,9 +227,12 @@ public class FXMLController implements Initializable{
 					alert.setContentText("Ce nom de mod existe déjà");
 					alert.showAndWait();
 				}else{
-					File f = new File(Reference.outputLocation+lstv.getSelectionModel().getSelectedItem());
-					File newf = new File(Reference.outputLocation+res.get().getName());
-					File configf = new File(Reference.configLocation+lstv.getSelectionModel().getSelectedItem()+".ser");
+					File f = new File(Reference.OUTPUT_LOCATION
+							+lstv.getSelectionModel().getSelectedItem());
+					File newf = new File(Reference.OUTPUT_LOCATION
+							+res.get().getName());
+					File configf = new File(Reference.CONFIG_LOCATION
+							+lstv.getSelectionModel().getSelectedItem()+".ser");
 					configf.delete();
 					f.renameTo(newf);
 					mods.get(index).setName(res.get().getName());
@@ -180,20 +240,22 @@ public class FXMLController implements Initializable{
 					mods.get(index).setDescription(res.get().getDescription());
 					items.set(index,res.get().getName());
 					Serial();
-
 				}
 			}
 		}
 	}
-
-
+	
+	/**
+	 * Initialize method to set the listview and treeview listenner.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		this.fc = new FileCreator();
 		mods = new ArrayList<>();
 		ReadSerial();
-		File dir2 = new File(Reference.outputLocation);
+		File dir2 = new File(Reference.OUTPUT_LOCATION);
 		File[] filetemp2 = dir2.listFiles();
+		
 		for(int i = 0; i < filetemp2.length; i++){
 			if(!filetemp2[i].getName().equals("config"))
 			{
@@ -201,96 +263,121 @@ public class FXMLController implements Initializable{
 			}
 		}
 		lstv.setItems(items);
-		lstv.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val){
+		lstv.getSelectionModel().selectedItemProperty().
+		addListener(new ChangeListener<String>() {
+			public void changed(ObservableValue<? extends String> ov,
+					String old_val, String new_val){
 				int in = getIndex(new_val);
-				if(Rich.getChildren().size() != 0){
-					Rich.getChildren().remove(0, Rich.getChildren().size());
+				if(rich.getChildren().size() != 0){
+					rich.getChildren().remove(0, rich.getChildren().size());
 				}
 				root = new TreeItem<String>(new_val);
 				root.setExpanded(true);
-				File dir = new File(Reference.outputLocation+lstv.getSelectionModel().getSelectedItem());
+				File dir = new File(Reference.OUTPUT_LOCATION
+						+lstv.getSelectionModel().getSelectedItem());
 				root = getTreeView(dir);
-				TreeV.setRoot(root);
+				treeV.setRoot(root);
 				if(lstv.getItems().size() > 0){
-					if(TreeV.getSelectionModel().getSelectedItem() != null && TreeV.getSelectionModel().getSelectedItem().equals(root)){
+					if(treeV.getSelectionModel().getSelectedItem() != null 
+							&& treeV.getSelectionModel().getSelectedItem()
+							.equals(root)){
 						Text tm = new Text("Mod: ");
 						tm.setFont(Font.font("Helvetica", FontWeight.BOLD ,16));
 						Text text2 = new Text("Version: ");
-						text2.setFont(Font.font("Helvetica", FontWeight.BOLD ,16));
+						text2.setFont(Font.font("Helvetica",
+								FontWeight.BOLD ,16));
 						Text text3 = new Text("Description: ");
-						text3.setFont(Font.font("Helvetica", FontWeight.BOLD ,16));
+						text3.setFont(Font.font("Helvetica",
+								FontWeight.BOLD ,16));
 						Text t1 = new Text(mods.get(in).getName()+"\n");
 						t1.setFont(Font.font("Helvetica",12));
 						Text t2 = new Text(mods.get(in).getVersion()+"\n");
 						t2.setFont(Font.font("Helvetica", 12));
 						Text t3 = new Text(mods.get(in).getDescription()+"\n");
 						t3.setFont(Font.font("Helvetica", 12));
-						Rich.getChildren().addAll(tm, t1, text2, t2, text3, t3);
+						rich.getChildren().addAll(tm, t1, text2, t2, text3, t3);
 					}
 				}else{
 					Text def = new Text("Aucun mod");
-					Rich.getChildren().clear();
-					Rich.getChildren().add(def);
+					rich.getChildren().clear();
+					rich.getChildren().add(def);
 					root.getChildren().clear();
 					root.setValue("");
-					TreeV.setRoot(root);
+					treeV.setRoot(root);
 				}
-
 			};
-
 		});
-		TreeV.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<String>>() {
+		treeV.getSelectionModel().selectedItemProperty()
+		.addListener(new ChangeListener<TreeItem<String>>() {
 			@Override
-			public void changed(ObservableValue<? extends TreeItem<String>> observable, TreeItem<String> oldValue, TreeItem<String> newValue) {
-				if(Rich.getChildren().size() != 0){
-					Rich.getChildren().remove(0, Rich.getChildren().size());
+			public void changed(ObservableValue<? extends TreeItem<String>> 
+			observable, TreeItem<String> oldValue, TreeItem<String> newValue) {
+				if(rich.getChildren().size() != 0){
+					rich.getChildren().remove(0, rich.getChildren().size());
 				}
-				if(newValue != null && newValue.equals(TreeV.getRoot())){
+				if(newValue != null && newValue.equals(treeV.getRoot())){
 					Text tm = new Text("Mod: ");
 					tm.setFont(Font.font("Helvetica", FontWeight.BOLD ,16));
 					Text text2 = new Text("Version: ");
 					text2.setFont(Font.font("Helvetica", FontWeight.BOLD ,16));
 					Text text3 = new Text("Description: ");
 					text3.setFont(Font.font("Helvetica", FontWeight.BOLD ,16));
-					Text t1 = new Text(mods.get(lstv.getSelectionModel().getSelectedIndex()).getName()+"\n");
+					Text t1 = new Text(mods.get(lstv.getSelectionModel()
+							.getSelectedIndex()).getName()+"\n");
 					t1.setFont(Font.font("Helvetica",12));
-					Text t2 = new Text(mods.get(lstv.getSelectionModel().getSelectedIndex()).getVersion()+"\n");
+					Text t2 = new Text(mods.get(lstv.getSelectionModel()
+							.getSelectedIndex()).getVersion()+"\n");
 					t2.setFont(Font.font("Helvetica", 12));
-					Text t3 = new Text(mods.get(lstv.getSelectionModel().getSelectedIndex()).getDescription()+"\n");
+					Text t3 = new Text(mods.get(lstv.getSelectionModel()
+							.getSelectedIndex()).getDescription()+"\n");
 					t3.setFont(Font.font("Helvetica", 12));
-					Rich.getChildren().addAll(tm, t1, text2, t2, text3, t3);
-				}else if(!TreeV.getSelectionModel().isEmpty() && TreeV.getSelectionModel().getSelectedItem().getValue().endsWith(".java")){
-					FilePreview fp = new FilePreview(Reference.outputLocation+"/"+getTreeViewPath(TreeV.getSelectionModel().getSelectedItem()));
+					rich.getChildren().addAll(tm, t1, text2, t2, text3, t3);
+				}else if(!treeV.getSelectionModel().isEmpty() 
+						&& treeV.getSelectionModel().getSelectedItem()
+						.getValue().endsWith(".java")){
+					FilePreview fp = new FilePreview(Reference.OUTPUT_LOCATION
+							+"/"+getTreeViewPath(treeV.getSelectionModel()
+									.getSelectedItem()));
 					try {
-						Rich.getChildren().add(fp.getText());
+						rich.getChildren().add(fp.getText());
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
 				}
 			}
 		});
-
 	}
 
-	private String getTreeViewPath(TreeItem<String> t){
-		String res = t.getValue();
-		while(t.getParent() != null){
-			res = t.getParent().getValue() + "/" + res;
-			t = t.getParent();
+	/**
+	 * Recursive function to get the path from a TreeItem.
+	 * @param treeItem the tree item.
+	 * @return the String representation of the path.
+	 */
+	private String getTreeViewPath(TreeItem<String> treeItem){
+		String res = treeItem.getValue();
+		while(treeItem.getParent() != null){
+			res = treeItem.getParent().getValue() + "/" + res;
+			treeItem = treeItem.getParent();
 		}
 		return res;
 	}
 
+	/**
+	 * Recursive function to get the TreeView from a file dir.
+	 * @param dir the dir to get the TreeView.
+	 * @return the corresponding TreeView.
+	 */
 	private TreeItem<String> getTreeView(File dir){
 		TreeItem<String> rtemp = new TreeItem<>(dir.getName());
 		File[] filetemp = dir.listFiles();
 		for(int i = 0; i < filetemp.length; i++){
 			if(!filetemp[i].getName().endsWith(".ser")){
 				if(filetemp[i].isFile()){
-					rtemp.getChildren().add(new TreeItem<String>(filetemp[i].getName()));
+					rtemp.getChildren().add(new TreeItem<String>(
+							filetemp[i].getName()));
 				}else{
-					TreeItem<String> newroot = getTreeView(new File(filetemp[i].getPath()));
+					TreeItem<String> newroot = getTreeView(new File(
+							filetemp[i].getPath()));
 					rtemp.getChildren().add(newroot);
 				}
 			}
@@ -298,7 +385,12 @@ public class FXMLController implements Initializable{
 		return rtemp;
 	}
 
-	private int getIndex(String name){
+	/**
+	 * Get the index of the mod from it's name.
+	 * @param name the mod name.
+	 * @return the index in the mod ArrayList.
+	 */
+	private int getIndex(String name) {
 		for(ModInfo mod : mods){
 			if(mod.getName().equals(name)){
 				return mods.indexOf(mod);
@@ -307,10 +399,13 @@ public class FXMLController implements Initializable{
 		return -1;
 	}
 
-	private void Serial(){
+	/**
+	 * Serial the mod info object to the config folder location.
+	 */
+	private void Serial() {
 		ObjectOutputStream oos;
 		for(ModInfo mi : mods){
-			File file = new File(Reference.configLocation+mi.getName()+".ser");
+			File file = new File(Reference.CONFIG_LOCATION+mi.getName()+".ser");
 			if(!file.exists()){
 				try {
 					file.createNewFile();
@@ -334,8 +429,12 @@ public class FXMLController implements Initializable{
 		}
 	}
 
+	/**
+	 * Read all .ser file in the config location and add each mod to the 
+	 * ArrayList mod.
+	 */
 	private void ReadSerial(){
-		File f = new File(Reference.configLocation);
+		File f = new File(Reference.CONFIG_LOCATION);
 		if(!f.exists()){
 			f.mkdirs();
 		}

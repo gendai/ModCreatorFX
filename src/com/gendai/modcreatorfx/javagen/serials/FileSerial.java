@@ -1,3 +1,21 @@
+/*
+ * ModCreatorFX, a mod generator with templates
+ * Copyright (C) gendai <https://bitbucket.org/Gendai/modcreatorfx>
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 package com.gendai.modcreatorfx.javagen.serials;
 
 import java.io.BufferedOutputStream;
@@ -9,39 +27,54 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Utility to serial a file class and methods.
+ * @author gendai
+ * @version 0.0.1
+ */
 public class FileSerial implements Serializable{
-
 	private static final long serialVersionUID = -7571066539769329184L;
 	int packagePos;
 	int importPos;
-	ArrayList<ClassSerial> Cserial;
-	ArrayList<MethodSerial> Mserial;
+	ArrayList<ClassSerial> classSerial;
+	ArrayList<MethodSerial> methodSerial;
 	
+	/**
+	 * Create a FileSerial.
+	 * @param pPos the package position in term of line in the file.
+	 * @param imPos the first import position in term of line in the file.
+	 */
 	public FileSerial(int pPos, int imPos){
 		this.packagePos = pPos;
 		this.importPos = imPos;
-		Cserial = new ArrayList<>();
-		Mserial = new ArrayList<>();
+		classSerial = new ArrayList<>();
+		methodSerial = new ArrayList<>();
 	}
 	
 	public void addClass(ClassSerial cs){
-		Cserial.add(cs);
+		classSerial.add(cs);
 	}
 	
 	public void addMethod(MethodSerial ms){
-		Mserial.add(ms);
+		methodSerial.add(ms);
 	}
 	
 	public MethodSerial getMethod(int index){
-		return Mserial.get(index);
+		return methodSerial.get(index);
 	}
 	
 	public ClassSerial getClass(int index){
-		return Cserial.get(index);
+		return classSerial.get(index);
 	}
 	
+	/**
+	 * Get a MethodSerial from the file.
+	 * @param name the name of the method.
+	 * @param numParam the number of parameter of the method.
+	 * @return the MethodSerial.
+	 */
 	public MethodSerial getMethod(String name, int numParam){
-		for(MethodSerial ms : Mserial){
+		for(MethodSerial ms : methodSerial){
 			if(ms.getName().equals(name) && ms.getNumParam() == numParam){
 				return ms;
 			}
@@ -49,8 +82,13 @@ public class FileSerial implements Serializable{
 		return null;
 	}
 	
+	/**
+	 * Get a ClassSerial from a file.
+	 * @param name the name of the class.
+	 * @return the ClassSerial.
+	 */
 	public ClassSerial getClass(String name){
-		for(ClassSerial cs : Cserial){
+		for(ClassSerial cs : classSerial){
 			if(cs.getName() == name){
 				return cs;
 			}
@@ -59,21 +97,26 @@ public class FileSerial implements Serializable{
 	}
 	
 	public void setClassSerial(ArrayList<ClassSerial> acs){
-		this.Cserial = acs;
+		this.classSerial = acs;
 	}
 	
 	public void setMethodSerial(ArrayList<MethodSerial> ams){
-		this.Mserial = ams;
+		this.methodSerial = ams;
 	}
 
 	public ArrayList<ClassSerial> getCserial() {
-		return Cserial;
+		return classSerial;
 	}
 
 	public ArrayList<MethodSerial> getMserial() {
-		return Mserial;
+		return methodSerial;
 	}
 	
+	/**
+	 * Serial the file.
+	 * @param modname the mod name which own the file.
+	 * @param fileName the name file to store.
+	 */
 	public void Serial(String modname,String fileName){
 		ObjectOutputStream oos;
 		File file = new File("./javaoutput/"+modname+"/"+fileName+".ser");
