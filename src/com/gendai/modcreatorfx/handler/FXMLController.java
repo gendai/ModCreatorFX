@@ -1,6 +1,6 @@
 /*
  * ModCreatorFX, a mod generator with templates
- * Copyright (C) gendai <https://bitbucket.org/Gendai/modcreatorfx>
+ * Copyright (C) gendai <https://github.com/gendai/ModCreatorFX>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -60,7 +60,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -77,7 +76,6 @@ public class FXMLController implements Initializable{
 	@FXML private Label modlbl;
 	@FXML private TextFlow rich;
 	@FXML private Button addItem;
-	@FXML private Pane panTest;
 	private final ObservableList<String> items = FXCollections.observableArrayList();
 	private TreeItem<String> root;
 	private FileCreator fc;

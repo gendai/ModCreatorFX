@@ -1,6 +1,6 @@
 /*
  * ModCreatorFX, a mod generator with templates
- * Copyright (C) gendai <https://bitbucket.org/Gendai/modcreatorfx>
+ * Copyright (C) gendai <https://github.com/gendai/ModCreatorFX>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
