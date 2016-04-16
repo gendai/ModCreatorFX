@@ -29,7 +29,7 @@ import com.gendai.modcreatorfx.javagen.classio.ClassReader;
 import javafx.scene.text.Text;
 
 /**
- * Class used to give a (JavaFX)Text of a java file.
+ * Class used to give a {@link Text} of a java file.
  * @author gendai
  * @version 0.0.1
  */
@@ -37,7 +37,7 @@ public class FilePreview {
 	private File file;
 	
 	/**
-	 * Create a new FilePreview of a file.
+	 * Create a new {@link FilePreview} of a file.
 	 * @param path the path of the file.
 	 */
 	public FilePreview(String path) {
@@ -45,8 +45,8 @@ public class FilePreview {
 	}
 	
 	/**
-	 * Create a Text object with the content of the file.
-	 * @return Text object.
+	 * Create a {@link Text} object with the content of the file.
+	 * @return {@link Text} object.
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */

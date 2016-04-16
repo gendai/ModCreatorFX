@@ -53,9 +53,9 @@ public class ClassGen {
 	ArrayList<ClassSerial> acs;
 
 	/**
-	 * Define a new class in the base generator passed in argument.
+	 * Define a new class in the {@link BaseGenerator} passed in argument.
 	 * @param name the class name.
-	 * @param v the Visibility of the class.
+	 * @param v the {@link Visibility} of the class.
 	 * @param pak the package name.
 	 * @param extend if the class extends something pass it in String format,
 	 * otherwise pass "".
@@ -63,7 +63,7 @@ public class ClassGen {
 	 * otherwise pass "".
 	 * @param annotation if the class need annotation pass it in String format,*
 	 * otherwise pass "".
-	 * @param bg the BaseGenerator where the class will be added.
+	 * @param bg the {@link BaseGenerator} where the class will be added.
 	 */
 	public ClassGen(String name, Visibility v, String pak,  String extend,
 			String implem, String annotation, BaseGenerator bg) {
@@ -94,7 +94,7 @@ public class ClassGen {
 	 * ArrayList of lines, then serial the class and add it in the ArrayList.
 	 * @param extend if the class extend something pass it in String format,
 	 * otherwise pass "".
-	 * @param implem if the class implement someting pass it in String format,
+	 * @param implem if the class implement something pass it in String format,
 	 * otherwise pass "".
 	 * @param annotation if the class need annotation pass it in String 
 	 * argument otherwise pass "".
@@ -127,7 +127,7 @@ public class ClassGen {
 
 	/**
 	 * Add declarations to the class.
-	 * @param cd the CodeBlock containing the declarations
+	 * @param cd the {@link CodeBlock} containing the declarations
 	 */
 	public void addDeclaration(CodeBlock cd){
 		lines.add(strtpos, cd.getString());
@@ -145,8 +145,8 @@ public class ClassGen {
 
 	/**
 	 * Set the constructor of the class.
-	 * @param md the MethodDeclarator relative to this class.
-	 * @param cd the CodeBlock relative to this class.
+	 * @param md the {@link MethodDeclarator} relative to this class.
+	 * @param cd the {@link CodeBlock} relative to this class.
 	 * @throws IOException
 	 */
 	public void SetConstructor(MethodDeclarator md, CodeBlock cd) 
@@ -163,10 +163,10 @@ public class ClassGen {
 
 	/**
 	 * Add a method to this class.
-	 * @param md the MethodDeclarator if this method.
+	 * @param md the {@link MethodDeclarator} if this method.
 	 * @param annotation if the method need annotation pass it in string format,
 	 * otherwise pass "",
-	 * @param cd the CodeBlock relative to this method.
+	 * @param cd the {@link CodeBlock} relative to this method.
 	 * @throws IOException
 	 */
 	public void addMethod(MethodDeclarator md, String annotation,CodeBlock cd) 

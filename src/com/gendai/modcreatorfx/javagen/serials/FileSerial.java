@@ -40,7 +40,7 @@ public class FileSerial implements Serializable{
 	ArrayList<MethodSerial> methodSerial;
 	
 	/**
-	 * Create a FileSerial.
+	 * Create a {@link FileSerial}.
 	 * @param pPos the package position in term of line in the file.
 	 * @param imPos the first import position in term of line in the file.
 	 */
@@ -68,10 +68,10 @@ public class FileSerial implements Serializable{
 	}
 	
 	/**
-	 * Get a MethodSerial from the file.
+	 * Get a {@link MethodSerial} from the file.
 	 * @param name the name of the method.
 	 * @param numParam the number of parameter of the method.
-	 * @return the MethodSerial.
+	 * @return the {@link MethodSerial}.
 	 */
 	public MethodSerial getMethod(String name, int numParam){
 		for(MethodSerial ms : methodSerial){
@@ -83,9 +83,9 @@ public class FileSerial implements Serializable{
 	}
 	
 	/**
-	 * Get a ClassSerial from a file.
+	 * Get a {@link ClassSerial} from a file.
 	 * @param name the name of the class.
-	 * @return the ClassSerial.
+	 * @return the {@link ClassSerial}.
 	 */
 	public ClassSerial getClass(String name){
 		for(ClassSerial cs : classSerial){

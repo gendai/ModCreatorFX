@@ -21,10 +21,11 @@ package com.gendai.modcreatorfx.gui.dialog.info;
 
 import java.io.File;
 
+import com.gendai.modcreatorfx.gui.dialog.ItemDiag;
 import com.gendai.modcreatorfx.modcreator.MCTypes.ItemType;
 
 /**
- * Type containing the information for the ItemDiag class.
+ * Type containing the information for the {@link ItemDiag} class.
  * @author gendai
  * @version 0.0.1
  */

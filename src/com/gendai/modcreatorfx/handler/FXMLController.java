@@ -82,7 +82,7 @@ public class FXMLController implements Initializable{
 	private ArrayList<ModInfo> mods;
 
 	/**
-	 * Update the TreeView items when the Mod tab is selected.
+	 * Update the {@link TreeView} items when the Mod tab is selected.
 	 * @param e
 	 */
 	@FXML protected void OnTabSel(Event e){
@@ -127,7 +127,7 @@ public class FXMLController implements Initializable{
 	}
 
 	/**
-	 * Open the Item dialog box and if parameters are right, create the item.
+	 * Open the {@link ItemDiag} dialog box and if parameters are right, create the item.
 	 * @param e
 	 */
 	@FXML protected void OnItemClick(ActionEvent e){
@@ -159,7 +159,7 @@ public class FXMLController implements Initializable{
 	}
 
 	/**
-	 * Open the mod dialog box and add the mod if all parameters are right.
+	 * Open the {@link ModDiag} dialog box and add the mod if all parameters are right.
 	 * @param e
 	 */
 	@FXML protected void OnAddClick(ActionEvent e){
@@ -244,7 +244,7 @@ public class FXMLController implements Initializable{
 	}
 	
 	/**
-	 * Initialize method to set the listview and treeview listenner.
+	 * Initialize method to set the {@link ListView} and {@link TreeView} listener.
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -347,8 +347,8 @@ public class FXMLController implements Initializable{
 	}
 
 	/**
-	 * Recursive function to get the path from a TreeItem.
-	 * @param treeItem the tree item.
+	 * Recursive function to get the path from a {@link TreeItem}.
+	 * @param treeItem the {@link TreeItem}.
 	 * @return the String representation of the path.
 	 */
 	private String getTreeViewPath(TreeItem<String> treeItem){
@@ -361,9 +361,9 @@ public class FXMLController implements Initializable{
 	}
 
 	/**
-	 * Recursive function to get the TreeView from a file dir.
-	 * @param dir the dir to get the TreeView.
-	 * @return the corresponding TreeView.
+	 * Recursive function to get the {@link TreeView} from a file dir.
+	 * @param dir the dir to get the {@link TreeView}.
+	 * @return the corresponding {@link TreeView}.
 	 */
 	private TreeItem<String> getTreeView(File dir){
 		TreeItem<String> rtemp = new TreeItem<>(dir.getName());
@@ -386,7 +386,7 @@ public class FXMLController implements Initializable{
 	/**
 	 * Get the index of the mod from it's name.
 	 * @param name the mod name.
-	 * @return the index in the mod ArrayList.
+	 * @return the index in the mod {@link ArrayList}.
 	 */
 	private int getIndex(String name) {
 		for(ModInfo mod : mods){
@@ -398,7 +398,7 @@ public class FXMLController implements Initializable{
 	}
 
 	/**
-	 * Serial the mod info object to the config folder location.
+	 * Serial the {@link ModInfo} object to the config folder location.
 	 */
 	private void Serial() {
 		ObjectOutputStream oos;

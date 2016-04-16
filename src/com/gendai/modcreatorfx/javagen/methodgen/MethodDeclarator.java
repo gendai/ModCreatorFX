@@ -38,9 +38,9 @@ public class MethodDeclarator {
 	/**
 	 * Set up the method parameters.
 	 * @param name the name of the method.
-	 * @param t the ReturnType of the method.
-	 * @param p the MethodParams relative to the method.
-	 * @param v the Visibility of this method.
+	 * @param t the {@link ReturnType} of the method.
+	 * @param p the {@link MethodParams} relative to the method.
+	 * @param v the {@link Visibility} of this method.
 	 */
 	public MethodDeclarator(String name, ReturnType t, MethodParams p, Visibility v){
 		this.name = name;
@@ -51,7 +51,7 @@ public class MethodDeclarator {
 	}
 		
 	/**
-	 * Get the string representation of the MethodDeclarator.
+	 * Get the string representation of the {@link MethodDeclarator}.
 	 */
 	@Override
 	public String toString(){

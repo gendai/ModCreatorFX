@@ -41,10 +41,10 @@ public class Utility {
 	}
 	
 	/**
-	 * Insert the string in the file at the index.
+	 * Insert the string in the {@link File} at the index.
 	 * @param index the index to insert.
 	 * @param s the string to insert.
-	 * @param f the file to insert to.
+	 * @param f the {@link File} to insert to.
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
@@ -66,10 +66,10 @@ public class Utility {
 	
 	/**
 	 * Insert all the lines from the ArrayList starting at the index into the
-	 * file
+	 * {@link File}
 	 * @param index the index where to start inserting.
 	 * @param lines the ArrayList of string to insert.
-	 * @param f the file to insert to.
+	 * @param f the {@link File} to insert to.
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
@@ -101,11 +101,11 @@ public class Utility {
 	}
 
 	/**
-	 * Add a method to a MethodSerial without the ClassGenerator of it.
-	 * @param md the MethodDeclarator relative to the method.
-	 * @param cd the CodeBock relative to the method.
+	 * Add a method to a {@link MethodSerial} without the {@link ClassGenerator} of it.
+	 * @param md the {@link MethodDeclarator} relative to the method.
+	 * @param cd the {@link CodeBock} relative to the method.
 	 * @return A tuple containing the ArrayList of string representing the
-	 * method and the MethodSerial of this method.
+	 * method and the {@link MethodSerial} of this method.
 	 * @throws IOException
 	 */
 	public Tuple<ArrayList<String>, MethodSerial> addMethod(MethodDeclarator md,

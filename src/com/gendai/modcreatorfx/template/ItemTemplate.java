@@ -64,8 +64,8 @@ public class ItemTemplate {
 	
 	/**
 	 * Create a new ItemTemplate
-	 * @param mod the ModInfo.
-	 * @param item the ItemInfo.
+	 * @param mod the {@link ModInfo}.
+	 * @param item the {@link ItemInfo}.
 	 */
 	public ItemTemplate(ModInfo mod,ItemInfo item){
 		this.item = item;
@@ -74,7 +74,7 @@ public class ItemTemplate {
 	
 	/**
 	 * Set up all the directory used then for generating the java files.
-	 * Also get the texture file and the json file and modify as needed.
+	 * Also get the texture file and the json({@link JSONObject}) file and modify as needed.
 	 */
 	@SuppressWarnings("unchecked")
 	private void config(){

@@ -47,9 +47,9 @@ public class ModDiag {
 	}
 	
 	/**
-	 * Create a Dialog<ModInfo> with all the parameters to modify the mod info.
+	 * Create a Dialog of type {@link ModInfo} with all the parameters to modify the mod info.
 	 * @param modInfo the current mod info.
-	 * @return the created Dialog<ModInfo>.
+	 * @return the created Dialog.
 	 */
 	public Dialog<ModInfo> ShowRenew(ModInfo modInfo){
 		diagRename = new Dialog<>();
@@ -91,7 +91,7 @@ public class ModDiag {
 	}
 	
 	/**
-	 * Create a Dialog<ModInfo> with all the parameters to create a new mod. 
+	 * Create a Dialog of type {@link ModInfo} with all the parameters to create a new mod. 
 	 * @return the created Dialog.
 	 */
 	public Dialog<ModInfo> ShowAdd(){

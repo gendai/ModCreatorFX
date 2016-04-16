@@ -35,7 +35,7 @@ public class BaseGenerator {
 	public String modName;
 	
 	/**
-	 * Create a new BaseGenerator.
+	 * Create a new {@link BaseGenerator}.
 	 * @param OutpoutDir the directory where to create the file.
 	 * @param filen the file name.
 	 * @param modName the mod name associated with this file.
@@ -47,12 +47,12 @@ public class BaseGenerator {
 	}
 	
 	/**
-	 * Create a ClassGenerator.
+	 * Create a {@link ClassGenerator}.
 	 * @param name the name of the class.
-	 * @param v the Visibility of the class.
+	 * @param v the {@link Visibility} of the class.
 	 * @param extend if the class extend something pass it in String format,
 	 * otherwise pass "".
-	 * @param implem if the class implement someting pass it in String format,
+	 * @param implem if the class implement something pass it in String format,
 	 * otherwise pass ""
 	 * @param annotation if the class need annotation pass it in String 
 	 * argument otherwise pass "".

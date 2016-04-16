@@ -34,7 +34,7 @@ public class MethodSerial implements Serializable{
 	private int numParam;
 	
 	/**
-	 * Create a new MethodSerial.
+	 * Create a new {@link MethodSerial}.
 	 * @param sPos the starting position in term of lines of the method in the
 	 * file
 	 * @param len the length in term of lines of the method.

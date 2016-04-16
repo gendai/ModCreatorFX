@@ -38,9 +38,9 @@ public class ClassReader {
 	}
 	
 	/**
-	 * Create a RandomAccessFile from the file in parameter.
-	 * @param f the file to get the RAF from.
-	 * @return the created RandomAccessFile.
+	 * Create a {@link RandomAccessFile} from the file in parameter.
+	 * @param f the file to get the {@link RandomAccessFile} from.
+	 * @return the created {@link RandomAccessFile}.
 	 * @throws FileNotFoundException
 	 */
 	public RandomAccessFile getRAF(File f) throws FileNotFoundException{
@@ -50,10 +50,10 @@ public class ClassReader {
 	}
 	
 	/**
-	 * Get all lines from the RandomAccessFile of a file and store it in an
+	 * Get all lines from the {@link RandomAccessFile} of a file and store it in an
 	 * ArrayList.
-	 * @param raf the RandomAccessFile.
-	 * @param f the File.
+	 * @param raf the {@link RandomAccessFile}.
+	 * @param f the {@link File}.
 	 * @return the created ArrayList of String lines.
 	 * @throws IOException
 	 */

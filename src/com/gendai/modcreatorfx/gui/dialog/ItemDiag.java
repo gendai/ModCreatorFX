@@ -55,7 +55,7 @@ public class ItemDiag {
 	}
 	
 	/**
-	 * Create a Dialog<ItemInfo> with all the parameters.
+	 * Create a Dialog of type {@link ItemInfo} with all the parameters.
 	 * @return the created Dialog.
 	 */
 	public Dialog<ItemInfo> Show(){

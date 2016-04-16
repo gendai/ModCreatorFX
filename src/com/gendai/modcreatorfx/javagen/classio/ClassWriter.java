@@ -35,8 +35,8 @@ public class ClassWriter {
 	RandomAccessFile raf;
 	
 	/**
-	 * Set up the RandomAccessFile from the File parameter.
-	 * @param f the file to write to.
+	 * Set up the {@link RandomAccessFile} from the {@link File} parameter.
+	 * @param f the {@link File} to write to.
 	 */
 	public ClassWriter(File f){
 		this.file = f;

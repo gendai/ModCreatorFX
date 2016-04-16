@@ -20,9 +20,10 @@
 package com.gendai.modcreatorfx.gui.dialog.info;
 
 import java.io.Serializable;
+import com.gendai.modcreatorfx.gui.dialog.ModDiag;
 
 /**
- * Type containing the information for the ModDiag class.
+ * Type containing the information for the {@link ModDiag} class.
  * @author gendai
  * @version 0.0.1
  */

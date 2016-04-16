@@ -22,7 +22,7 @@ package com.gendai.modcreatorfx.codegen;
 import com.gendai.modcreatorfx.codegen.JavaTypes.ReturnType;
 
 /**
- * Describe the a java expression, used by the CodeBlock class.
+ * Describe the a java expression, used by the {@link CodeBlock} class.
  * @author gendai
  * @version 0.0.1
  */
