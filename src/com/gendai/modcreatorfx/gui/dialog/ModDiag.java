@@ -17,11 +17,12 @@
  *
  */
 
-package com.gendai.modcreatorfx.gui;
+package com.gendai.modcreatorfx.gui.dialog;
 
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.image.Image;
 
+import com.gendai.modcreatorfx.gui.dialog.info.ModInfo;
 import com.gendai.modcreatorfx.resources.Resource;
 
 import javafx.scene.control.ButtonType;

@@ -17,7 +17,7 @@
  *
  */
 
-package com.gendai.modcreatorfx.gui;
+package com.gendai.modcreatorfx.gui.dialog.info;
 
 import java.io.Serializable;
 

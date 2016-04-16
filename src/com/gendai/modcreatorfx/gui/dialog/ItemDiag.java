@@ -17,10 +17,11 @@
  *
  */
 
-package com.gendai.modcreatorfx.gui;
+package com.gendai.modcreatorfx.gui.dialog;
 
 import java.io.File;
 
+import com.gendai.modcreatorfx.gui.dialog.info.ItemInfo;
 import com.gendai.modcreatorfx.modcreator.MCTypes.ItemType;
 import com.gendai.modcreatorfx.resources.Resource;
 

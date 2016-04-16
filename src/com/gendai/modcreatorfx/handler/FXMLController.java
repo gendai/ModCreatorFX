@@ -35,11 +35,11 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.gendai.modcreatorfx.gui.FilePreview;
-import com.gendai.modcreatorfx.gui.ItemDiag;
-import com.gendai.modcreatorfx.gui.ItemInfo;
-import com.gendai.modcreatorfx.gui.ModDiag;
-import com.gendai.modcreatorfx.gui.ModInfo;
 import com.gendai.modcreatorfx.gui.Reference;
+import com.gendai.modcreatorfx.gui.dialog.ItemDiag;
+import com.gendai.modcreatorfx.gui.dialog.ModDiag;
+import com.gendai.modcreatorfx.gui.dialog.info.ItemInfo;
+import com.gendai.modcreatorfx.gui.dialog.info.ModInfo;
 import com.gendai.modcreatorfx.modcreator.FileCreator;
 import com.gendai.modcreatorfx.template.ItemTemplate;
 
